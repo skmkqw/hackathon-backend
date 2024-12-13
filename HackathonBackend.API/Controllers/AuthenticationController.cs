@@ -5,8 +5,7 @@ using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using LoginRequest = Microsoft.AspNetCore.Identity.Data.LoginRequest;
-using RegisterRequest = Microsoft.AspNetCore.Identity.Data.RegisterRequest;
+
 
 namespace HackathonBackend.API.Controllers;
 

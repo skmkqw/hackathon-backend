@@ -29,7 +29,7 @@ public static class DependencyInjection
     
     private static IServiceCollection AddPersistence(this IServiceCollection services)
     {
-        services.AddDbContext<BackendDbContext>(options => options.UseNpgsql(connectionString: "Host=db.rcqmlpaxfdqhyfdjacdf.supabase.co;Database=postgres;Username=postgres;Password=[YOUR-PASSWORD];SSL Mode=Require;Trust Server Certificate=true"));
+        services.AddDbContext<BackendDbContext>(options => options.UseSqlServer("Data Source=localhost;Initial Catalog=HackathonDatabase;User Id=sa;Password=skmkqw04012006Tima;Integrated Security=True;TrustServerCertificate=true;Trusted_Connection=false"));
         
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
