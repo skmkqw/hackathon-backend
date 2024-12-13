@@ -11,10 +11,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Controllers\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\HackathonBackend.Application\HackathonBackend.Application.csproj" />
       <ProjectReference Include="..\HackathonBackend.Contracts\HackathonBackend.Contracts.csproj" />
     </ItemGroup>
