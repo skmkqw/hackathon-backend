@@ -3,27 +3,15 @@ using HackathonBackend.Domain.UserAggregate.ValueObjects;
 
 namespace HackathonBackend.Domain.UserAggregate;
 
-public sealed class User : AggregateRoot<UserId>
+public sealed class User : AppUser<UserId>
 {
-    public string FirstName { get; private set;}
-
-    public string LastName { get; private set;}
-
-    public string Email { get; }
-
-    public string Password { get; }
-    
     private User(
         UserId id, 
         string firstName, 
         string lastName, 
         string email, 
-        string password) : base(id)
+        string password) : base(id, firstName, lastName, email, password)
     {
-        FirstName = firstName;
-        LastName = lastName;
-        Email = email;
-        Password = password;
     }
 
     public static User Create( 
