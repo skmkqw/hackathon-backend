@@ -4,11 +4,11 @@ namespace HackathonBackend.Domain.DoctorAggregate.ValueObjects;
 
 public class Clinic : ValueObject
 {
-    public string Name { get; set; }
+    public string Name { get; private set; }
 
-    public string Address { get; set; }
+    public string Address { get; private set; }
 
-    public float Rating { get; set; }
+    public float Rating { get; private set; }
 
     private Clinic(string name, string address, float rating)
     {
@@ -24,6 +24,8 @@ public class Clinic : ValueObject
     
     protected override IEnumerable<object> GetEqualityComponents()
     {
-        throw new NotImplementedException();
+        yield return Name;
+        yield return Address;
+        yield return Rating;
     }
 }
