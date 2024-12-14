@@ -25,6 +25,8 @@ public static class DependencyInjection
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
         services.AddScoped<IChatKeyProvider, ChatKeyProvider>();
+
+        services.AddSingleton<IChatHistoryProvider, ChatHistoryProvider>();
         
         services.AddPersistence();
         return services;
