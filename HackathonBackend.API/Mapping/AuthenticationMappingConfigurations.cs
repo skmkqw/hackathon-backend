@@ -13,10 +13,17 @@ public class AuthenticationMappingConfigurations : IRegister
     public void Register(TypeAdapterConfig config)
     {
         config.NewConfig<RegisterRequest, RegisterCommand>();
+        
+        config.NewConfig<RegisterRequest, RegisterCommand>();
+
+        config.NewConfig<RegisterDoctorRequest, RegisterCommand>();
 
         config.NewConfig<LoginRequest, LoginQuery>();
 
         config.NewConfig<AuthenticationResult, AuthenticationResponse>()
             .Map(dest => dest.User.Id, src => src.User.Id.Value);
+
+        config.NewConfig<DoctorAuthenticationResult, DoctorAuthenticationResponse>()
+            .Map(dest => dest.Doctor.Id, src => src.Doctor.Id.Value);
     }
 }
