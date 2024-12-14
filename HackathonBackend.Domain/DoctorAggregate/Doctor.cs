@@ -10,6 +10,8 @@ public class Doctor : AppUser<DoctorId>
     public float Experience { get; private  set; }
     
     public float Rating { get; private  set; }
+
+    public string LicenseNumber { get; private set; }
     
     public Clinic? Clinic { get; private  set; }
 
@@ -21,12 +23,13 @@ public class Doctor : AppUser<DoctorId>
         string password,
         string specialization,
         float experience, 
-        float rating, 
-        Clinic? clinic) : base(id, firstName, lastName, email, password)
+        float rating,
+        string licenseNumber) : base(id, firstName, lastName, email, password)
     {
         Experience = experience;
         Specialization = specialization;
         Rating = rating;
+        LicenseNumber = licenseNumber;
     }
 
     public static Doctor Create( 
@@ -37,7 +40,7 @@ public class Doctor : AppUser<DoctorId>
         string specialization,
         float experience, 
         float rating,
-        Clinic? clinic)
+        string licenseNumber)
     {
         return new Doctor(
             DoctorId.CreateUnique(), 
@@ -47,7 +50,7 @@ public class Doctor : AppUser<DoctorId>
             specialization,
             experience,
             rating,
-            clinic);
+            licenseNumber);
     }
     
     
@@ -58,6 +61,11 @@ public class Doctor : AppUser<DoctorId>
         Specialization = specialization;
         Experience = experience;
         Rating = rating;
+    }
+
+    public void SetClinic(Clinic clinic)
+    {
+        Clinic = clinic;
     }
 
 #pragma warning disable CS8618
