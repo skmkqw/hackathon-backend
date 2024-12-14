@@ -23,12 +23,18 @@ public class ChatController : ApiController
         _mapper = mapper;
     }
 
-    [AllowAnonymous]
     [HttpPost("start")]
     public async Task<IActionResult> StartChat(StartChatRequest request)
     {
         _logger.LogInformation($"Starting chat: {request.Message}");
-        var command = _mapper.Map<StartChatCommand>(request);
+        
+        var userId = GetUserId();
+        if (!userId.HasValue)
+        {
+            return UnauthorizedUserIdProblem();
+        }
+        
+        var command = _mapper.Map<StartChatCommand>((request, userId));
         
         var startChatResult = await _mediator.Send(command);
 
