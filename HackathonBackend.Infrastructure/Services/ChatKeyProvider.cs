@@ -8,9 +8,9 @@ public class ChatKeyProvider : IChatKeyProvider
 {
     private readonly ChatSettings _chatSettings;
 
-    public ChatKeyProvider(IConfiguration _configuration)
+    public ChatKeyProvider(IConfiguration configuration)
     {
-        var settings = _configuration.GetSection("ChatSettings");
+        var settings = configuration.GetSection("ChatSettings");
         _chatSettings = new ChatSettings()
         {
             ApiKey = settings["API_KEY"]!

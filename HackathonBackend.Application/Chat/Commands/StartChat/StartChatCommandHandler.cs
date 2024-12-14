@@ -1,10 +1,29 @@
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using ErrorOr;
 using HackathonBackend.Application.Common.Interfaces.Services;
 using MediatR;
 using RestSharp;
 
 namespace HackathonBackend.Application.Chat.Commands.StartChat;
+
+public class ChatResponse
+{
+    [JsonPropertyName("choices")]
+    public List<Choice> Choices { get; set; }
+}
+
+public class Choice
+{
+    [JsonPropertyName("message")]
+    public Message Message { get; set; }
+}
+
+public class Message
+{
+    [JsonPropertyName("content")]
+    public string Content { get; set; }
+}
 
 public class StartChatCommandHandler : IRequestHandler<StartChatCommand, ErrorOr<string>>
 {
@@ -49,7 +68,9 @@ public class StartChatCommandHandler : IRequestHandler<StartChatCommand, ErrorOr
                 return Error.Failure($"Error from OpenAI: {response.StatusCode} - {response.Content}");
             }
 
-            return response.Content ?? string.Empty;
+            var responseData = JsonSerializer.Deserialize<ChatResponse>(response.Content!);
+
+            return responseData?.Choices.FirstOrDefault()?.Message.Content ?? string.Empty;
         }
         catch (Exception ex)
         {
