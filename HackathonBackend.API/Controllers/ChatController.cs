@@ -2,7 +2,6 @@ using HackathonBackend.Application.Chat.Commands.StartChat;
 using HackathonBackend.Contracts.Chat;
 using MapsterMapper;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HackathonBackend.API.Controllers;

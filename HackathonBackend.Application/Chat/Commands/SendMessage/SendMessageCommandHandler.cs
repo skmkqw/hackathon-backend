@@ -1,38 +1,27 @@
 using System.Text.Json;
 using ErrorOr;
 using HackathonBackend.Application.Chat.Common;
-using HackathonBackend.Application.Common.Interfaces.Persistance;
 using HackathonBackend.Application.Common.Interfaces.Services;
-using HackathonBackend.Domain.Common.Errors;
 using MediatR;
 using RestSharp;
 
-namespace HackathonBackend.Application.Chat.Commands.StartChat;
+namespace HackathonBackend.Application.Chat.Commands.SendMessage;
 
-public class StartChatCommandHandler : IRequestHandler<StartChatCommand, ErrorOr<string>>
+public class SendMessageCommandHandler  : IRequestHandler<SendMessageCommand, ErrorOr<string>>
 {
     private readonly string _endpoint = "https://artem-m4nhbbfy-eastus2.cognitiveservices.azure.com/openai/deployments/gpt-35-turbo-16k/chat/completions?api-version=2024-08-01-preview";
     private readonly IChatKeyProvider _chatKeyProvider;
     private readonly RestClient _client;
-    private readonly IUserRepository _userRepository;
     
-    public StartChatCommandHandler(IChatKeyProvider chatKeyProvider, IUserRepository userRepository)
+    public SendMessageCommandHandler(IChatKeyProvider chatKeyProvider)
     {
         _chatKeyProvider = chatKeyProvider;
-        _userRepository = userRepository;
         var options = new RestClientOptions(_endpoint);
         _client = new RestClient(options);
     }
 
-    public async Task<ErrorOr<string>> Handle(StartChatCommand request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<string>> Handle(SendMessageCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.FindByIdAsync(request.UserId);
-        
-        if (user is null)
-        {
-            return Errors.User.IdNotFound(request.UserId);
-        }
-        
         var apiRequest = new RestRequest();
 
         apiRequest.AddHeader("api-key", _chatKeyProvider.GetApiKey());
@@ -42,10 +31,10 @@ public class StartChatCommandHandler : IRequestHandler<StartChatCommand, ErrorOr
         {
             messages = new[]
             {
-                new { role = "system", content = $"1:You are a medical assistant designed to bridge the gap between the client and healthcare professionals. Your task is to gather information about the client's symptoms and concerns, recommend the most appropriate medical category based on their input, and help them view available doctors within that category. My name is {user.FirstName} {user.LastName} and my birthday is on {user.BirthDate}" },
+                new { role = "system", content = $"1:You are a medical assistant designed to bridge the gap between the client and healthcare professionals. Your task is to gather information about the client's symptoms and concerns, recommend the most appropriate medical category based on their input, and help them view available doctors within that category" },
                 new { role = "user", content = request.Message }
             },
-            max_tokens = 1000,
+            max_tokens = 300,
             temperature = 0.7,
             top_p = 0.95
         };

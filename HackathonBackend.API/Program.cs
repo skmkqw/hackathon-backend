@@ -1,4 +1,5 @@
 using HackathonBackend.API;
+using HackathonBackend.API.Hubs;
 using HackathonBackend.Application;
 using HackathonBackend.Infrastructure;
 
@@ -21,8 +22,10 @@ var app = builder.Build();
     app.UseHttpsRedirection();
     
     app.UseAuthorization();
-
+    
     app.MapControllers();
+
+    app.MapHub<ChatHub>("/chat");
     
     app.Run();
 }
