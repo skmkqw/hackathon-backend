@@ -8,6 +8,7 @@ public record RegisterDoctorRequest(    string FirstName,
     float Rating,
     float Experience,
     string LicenseNumber,
+    string PhoneNumber,
     CreateClinicRequest? Clinic
     );
     

@@ -57,5 +57,10 @@ public class DoctorConfigurations : IEntityTypeConfiguration<Doctor>
             .IsRequired();
 
         builder.OwnsOne(x => x.Clinic);
+        
+        //PhoneNUmber
+        builder.Property(x => x.PhoneNumber)
+            .IsRequired()
+            .HasMaxLength(12);
     }
 }

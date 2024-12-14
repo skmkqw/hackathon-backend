@@ -36,6 +36,10 @@ public class RegisterDoctorCommandValidator : AbstractValidator<RegisterDoctorCo
             .GreaterThan(0).WithMessage("Rating must be greater than 0")
             .LessThan(5).WithMessage("Rating must be less than 60");
         
+        RuleFor(x => x.PhoneNumber)
+            .NotEmpty().WithMessage("Phone number is required")
+            .Length(12).WithMessage("Phone number must be 12 characters");
+        
         RuleFor(x => x.Password)
             .NotEmpty().WithMessage("Password is required")
             .MinimumLength(8).WithMessage("Password must be at least 8 characters long")

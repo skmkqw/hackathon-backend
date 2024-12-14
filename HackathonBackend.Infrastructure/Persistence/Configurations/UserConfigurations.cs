@@ -42,5 +42,14 @@ public class UserConfigurations : IEntityTypeConfiguration<User>
         builder.Property(x => x.Password)
             .IsRequired()
             .HasMaxLength(100);
+        
+        //PhoneNumber
+        builder.Property(x => x.BirthDate)
+            .IsRequired();
+        
+        //PhoneNumber
+        builder.Property(x => x.PhoneNumber)
+            .IsRequired()
+            .HasMaxLength(12);
     }
 }

@@ -42,7 +42,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<A
         }
 
         string hashedPassword = _passwordHasher.HashPassword(request.Password);
-        var user = User.Create(request.FirstName, request.LastName, request.Email, hashedPassword);
+        var user = User.Create(request.FirstName, request.LastName, request.Email, hashedPassword, request.PhoneNumber, request.BirthDate);
 
         string token = _jwtTokenGenerator.GenerateJwtToken(user);
         _userRepository.Add(user);

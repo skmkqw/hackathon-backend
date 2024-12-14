@@ -13,6 +13,7 @@ public record RegisterDoctorCommand(
     float Rating,
     string LicenseNumber,
     float Experience,
+    string PhoneNumber,
     ClinicCommand? Clinic) : IRequest<ErrorOr<DoctorAuthenticationResult>>;
     
 public record ClinicCommand(string Name, string Address, float Rating);

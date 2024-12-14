@@ -44,7 +44,7 @@ public class RegisterDoctorCommandHandler : IRequestHandler<RegisterDoctorComman
         }
 
         string hashedPassword = _passwordHasher.HashPassword(request.Password);
-        var doctor = Doctor.Create(request.FirstName, request.LastName, request.Email, hashedPassword, request.Specialization, request.Rating, request.Experience, request.LicenseNumber);
+        var doctor = Doctor.Create(request.FirstName, request.LastName, request.Email, hashedPassword, request.Specialization, request.Rating, request.Experience, request.LicenseNumber, request.PhoneNumber);
 
         if (request.Clinic is not null)
         {

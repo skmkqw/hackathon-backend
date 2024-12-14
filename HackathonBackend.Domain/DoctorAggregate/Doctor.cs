@@ -24,7 +24,8 @@ public class Doctor : AppUser<DoctorId>
         string specialization,
         float experience, 
         float rating,
-        string licenseNumber) : base(id, firstName, lastName, email, password)
+        string licenseNumber,
+        string phoneNumber) : base(id, firstName, lastName, email, password, phoneNumber)
     {
         Experience = experience;
         Specialization = specialization;
@@ -40,7 +41,8 @@ public class Doctor : AppUser<DoctorId>
         string specialization,
         float experience, 
         float rating,
-        string licenseNumber)
+        string licenseNumber,
+        string phoneNumber)
     {
         return new Doctor(
             DoctorId.CreateUnique(), 
@@ -50,7 +52,8 @@ public class Doctor : AppUser<DoctorId>
             specialization,
             experience,
             rating,
-            licenseNumber);
+            licenseNumber,
+            phoneNumber);
     }
     
     

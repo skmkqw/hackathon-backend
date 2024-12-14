@@ -18,6 +18,13 @@ public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
             .NotEmpty().WithMessage("Email is required")
             .EmailAddress().WithMessage("Please enter a valid email address");
         
+        RuleFor(x => x.PhoneNumber)
+            .NotEmpty().WithMessage("Phone number is required")
+            .Length(12).WithMessage("Phone number must be 12 characters");
+
+        RuleFor(x => x.BirthDate)
+            .NotEmpty().WithMessage("Birth date is required");
+        
         RuleFor(x => x.Password)
             .NotEmpty().WithMessage("Password is required")
             .MinimumLength(8).WithMessage("Password must be at least 8 characters long")

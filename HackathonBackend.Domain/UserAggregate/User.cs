@@ -5,26 +5,35 @@ namespace HackathonBackend.Domain.UserAggregate;
 
 public sealed class User : AppUser<UserId>
 {
+    public DateOnly BirthDate { get; private set; }
+    
     private User(
         UserId id, 
         string firstName, 
         string lastName, 
         string email, 
-        string password) : base(id, firstName, lastName, email, password)
+        string password,
+        string phoneNumber,
+        DateOnly birthDate) : base(id, firstName, lastName, email, password, phoneNumber)
     {
+        BirthDate = birthDate;
     }
 
     public static User Create( 
         string firstName,
         string lastName, 
         string email,
-        string password)
+        string password,
+        string phoneNumber,
+        DateOnly birthDate)
     {
         return new User(
             UserId.CreateUnique(), 
             firstName, lastName,
             email, 
-            password);
+            password,
+            phoneNumber,
+            birthDate);
     }
 
     public void Update(string firstName, string lastName)
