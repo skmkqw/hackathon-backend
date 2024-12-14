@@ -49,10 +49,10 @@ public class StartChatCommandHandler : IRequestHandler<StartChatCommand, ErrorOr
         {
             messages = new[]
             {
-                new { role = "system", content = "You are an AI assistant designed to provide helpful and detailed responses to user queries." },
+                new { role = "system", content = "1:You are a medical assistant designed to bridge the gap between the client and healthcare professionals. Your task is to gather information about the client's symptoms and concerns, recommend the most appropriate medical category based on their input, and help them view available doctors within that category." },
                 new { role = "user", content = request.Message }
             },
-            max_tokens = 200,
+            max_tokens = 1000,
             temperature = 0.7,
             top_p = 0.95
         };
