@@ -1,5 +1,6 @@
 using System.Text;
 using HackathonBackend.Application.Common.Interfaces.Persistance;
+using HackathonBackend.Application.Common.Interfaces.Services;
 using HackathonBackend.Application.Common.Interfaces.Services.Authentication;
 using HackathonBackend.Infrastructure.Authentication;
 using HackathonBackend.Infrastructure.Persistence;
@@ -22,6 +23,8 @@ public static class DependencyInjection
         services.AddAuth(configuration);
         
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
+
+        services.AddScoped<IChatKeyProvider, ChatKeyProvider>();
         
         services.AddPersistence();
         return services;

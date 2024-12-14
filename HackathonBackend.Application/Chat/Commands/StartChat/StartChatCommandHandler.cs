@@ -1,25 +1,31 @@
-using System.Text;
 using System.Text.Json;
 using ErrorOr;
+using HackathonBackend.Application.Common.Interfaces.Services;
 using MediatR;
+using RestSharp;
 
 namespace HackathonBackend.Application.Chat.Commands.StartChat;
 
 public class StartChatCommandHandler : IRequestHandler<StartChatCommand, ErrorOr<string>>
 {
     private readonly string _endpoint = "https://artem-m4nhbbfy-eastus2.cognitiveservices.azure.com/openai/deployments/gpt-35-turbo-16k/chat/completions?api-version=2024-08-01-preview";
-    private readonly string _apiKey = "4LkliS39TdSLMzpOZczsSM6F0ZNV30x5iJBd2XwdFEc2jSC8HLQgJQQJ99ALACHYHv6XJ3w3AAAAACOGassM";
+    private readonly IChatKeyProvider _chatKeyProvider;
+    private readonly RestClient _client;
     
-    public StartChatCommandHandler()
+    public StartChatCommandHandler(IChatKeyProvider chatKeyProvider)
     {
+        _chatKeyProvider = chatKeyProvider;
+        var options = new RestClientOptions(_endpoint);
+        _client = new RestClient(options);
     }
 
     public async Task<ErrorOr<string>> Handle(StartChatCommand request, CancellationToken cancellationToken)
     {
-        using var client = new HttpClient();
+        var apiRequest = new RestRequest();
 
-        client.DefaultRequestHeaders.Add("api-key", _apiKey);
-
+        apiRequest.AddHeader("api-key", _chatKeyProvider.GetApiKey());
+        apiRequest.AddHeader("Content-Type", "application/json");
+        
         var requestBody = new
         {
             messages = new[]
@@ -27,23 +33,23 @@ public class StartChatCommandHandler : IRequestHandler<StartChatCommand, ErrorOr
                 new { role = "system", content = "You are an AI assistant designed to provide helpful and detailed responses to user queries." },
                 new { role = "user", content = request.Message }
             },
-            max_tokens = 1000,
+            max_tokens = 200,
             temperature = 0.7,
             top_p = 0.95
         };
 
-        var json = JsonSerializer.Serialize(requestBody);
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        apiRequest.AddJsonBody(JsonSerializer.Serialize(requestBody));
 
         try
         {
-            var response = await client.PostAsync(_endpoint, content, cancellationToken);
+            var response = await _client.PostAsync(apiRequest, cancellationToken);
 
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessful)
+            {
+                return Error.Failure($"Error from OpenAI: {response.StatusCode} - {response.Content}");
+            }
 
-            var responseString = await response.Content.ReadAsStringAsync(cancellationToken);
-
-            return responseString;
+            return response.Content ?? string.Empty;
         }
         catch (Exception ex)
         {
