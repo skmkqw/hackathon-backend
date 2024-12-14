@@ -1,4 +1,5 @@
 using HackathonBackend.Application.Chat.Commands.SendMessage;
+using HackathonBackend.Application.Chat.Commands.StartChat;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
@@ -7,6 +8,7 @@ namespace HackathonBackend.API.Hubs;
 
 public interface IChatClient
 {
+    Task StartChat();
     Task ReceiveMessage(string message);
     
     Task SendMessage(string message);
@@ -23,9 +25,24 @@ public class ChatHub : Hub<IChatClient>
         _mapper = mapper;
     }
 
+    public async Task StartChat()
+    {
+        var command = new StartChatCommand();
+    
+        var startChatResult = await _mediator.Send(command);
+        
+        if (startChatResult.IsError)
+        {
+            await Clients.Caller.ReceiveMessage("Something went wrong");
+            
+            return;
+        }
+        
+        await Clients.All.ReceiveMessage(startChatResult.Value);
+    }
+
     public async Task SendMessage(string message)
     {
-        // var command = _mapper.Map<SendMessageCommand>(message);
         var command = new SendMessageCommand(message);
         await Clients.Caller.SendMessage(message);
         
