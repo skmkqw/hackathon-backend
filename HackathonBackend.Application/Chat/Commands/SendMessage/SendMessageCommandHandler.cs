@@ -31,7 +31,7 @@ public class SendMessageCommandHandler  : IRequestHandler<SendMessageCommand, Er
         {
             messages = new[]
             {
-                new { role = "system", content = $"1:You are a medical assistant designed to bridge the gap between the client and healthcare professionals. Your task is to gather information about the client's symptoms and concerns, recommend the most appropriate medical category based on their input, and help them view available doctors within that category. Keep in mind that this is may be the continuation of our dialog. Here's what we talked about before, so please dont forget it: {request.History}" },
+                new { role = "system", content = request.History },
                 new { role = "user", content = request.Message }
             },
             max_tokens = 300,
