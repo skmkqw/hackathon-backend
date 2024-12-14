@@ -1,4 +1,5 @@
 using HackathonBackend.Application.Authentication.Commands.Register;
+using HackathonBackend.Application.Authentication.Commands.RegisterDoctor;
 using HackathonBackend.Application.Authentication.Queries.Login;
 using HackathonBackend.Contracts.Authentication;
 using MapsterMapper;
@@ -70,5 +71,26 @@ public class AuthenticationController : ApiController
         HttpContext.Response.Cookies.Append("AuthToken", loginQueryResult.Value.Token, _cookieOptions);
 
         return Ok(_mapper.Map<AuthenticationResponse>(loginQueryResult.Value));
+    }
+    
+    
+    [HttpPost("doctors/register")]
+    public async Task<IActionResult> RegisterDoctor([FromBody] RegisterDoctorRequest request)
+    {
+        _logger.LogInformation("Register doctor request received for email: {Email}", request.Email);
+        
+        var command = _mapper.Map<RegisterDoctorCommand>(request);
+        var registerUserResult = await _mediator.Send(command);
+
+        if (registerUserResult.IsError)
+        {
+            _logger.LogInformation("Registration failed for email: {Email}. Errors: {Errors}", request.Email, registerUserResult.Errors);
+            return Problem(registerUserResult.Errors);
+        }
+
+        _logger.LogInformation("Registration successful for email: {Email}", request.Email);
+        HttpContext.Response.Cookies.Append("AuthToken", registerUserResult.Value.Token, _cookieOptions);
+
+        return Ok(_mapper.Map<DoctorAuthenticationResponse>(registerUserResult.Value));
     }
 }
