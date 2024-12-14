@@ -1,12 +1,11 @@
 using HackathonBackend.Domain.Common.Attributes;
 using HackathonBackend.Domain.Common.Models;
-using HackathonBackend.Domain.UserAggregate.ValueObjects;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HackathonBackend.Domain.DoctorAggregate.ValueObjects;
 
 
-[EfCoreValueConverter(typeof(UserId.UserIdValueConverter))]
+[EfCoreValueConverter(typeof(DoctorId.DoctorIdValueConverter))]
 public class DoctorId : ValueObject, IEntityId<DoctorId, Guid>
 {
     public Guid Value { get; }
