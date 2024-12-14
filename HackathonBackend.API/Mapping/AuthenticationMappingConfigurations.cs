@@ -1,6 +1,7 @@
 using HackathonBackend.Application.Authentication.Commands.Register;
 using HackathonBackend.Application.Authentication.Common;
 using HackathonBackend.Application.Authentication.Queries.Login;
+using HackathonBackend.Application.Authentication.Queries.LoginDoctor;
 using HackathonBackend.Contracts.Authentication;
 using Mapster;
 using LoginRequest = Microsoft.AspNetCore.Identity.Data.LoginRequest;
@@ -19,6 +20,8 @@ public class AuthenticationMappingConfigurations : IRegister
         config.NewConfig<RegisterDoctorRequest, RegisterCommand>();
 
         config.NewConfig<LoginRequest, LoginQuery>();
+        
+        config.NewConfig<LoginRequest, LoginDoctorQuery>();
 
         config.NewConfig<AuthenticationResult, AuthenticationResponse>()
             .Map(dest => dest.User.Id, src => src.User.Id.Value);
